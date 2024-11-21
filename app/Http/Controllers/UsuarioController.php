@@ -131,6 +131,10 @@ class UsuarioController extends Controller
         }
     }
 
+    //TERCER PARCIALLL
+
+    //Abrir subasta, cerrar subasta, cada wuien tiene que     pujar y amacenar ese registro
+
     //EJEMPLOS APIISSSSSSSS
     public function getAPIAll()
     {
