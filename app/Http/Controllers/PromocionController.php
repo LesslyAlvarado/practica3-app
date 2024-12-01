@@ -10,33 +10,53 @@ use Carbon\Carbon;
 
 class PromocionController extends Controller
 {
-    
+
     public function index()
     {
         //trae la fecha y hora actual
-        $fecha_inicio = Carbon::now()->subHours(6);
+        $fecha_inicio = Carbon::now();
         //trae la fecha y hora actual + 2 minutos
-        $fecha_fin = Carbon::now()->addHours(-6)->addMinutes(2);
+        $fecha_fin = Carbon::now()->addHours(-6)->addMinutes(10);
         //trae la fecha y hora actual + 2 segundos
         // $afterM = Carbon::now()->addMonths(2); //igual gunciona como resta, poner -2
         $fecha_especifica = Carbon::create('2024-12-31 12:00:00');
 
         //Registro....
         $periodo = new Promocion();
-        $periodo->nombre_promocion = "Black Friday";
-        $periodo->porcentaje_descuento = 50;
+        $periodo->nombre_promocion = "Cyber Monday";
+        $periodo->porcentaje_descuento = 20;
         $periodo->fecha_inicio = $fecha_inicio;
         $periodo->fecha_fin = $fecha_fin;
         $periodo->save();
 
         return [
-            'fecha_inicio' => $fecha_inicio,
-            'fecha_fin' => $fecha_fin,
-            'fecha_especifica' => $fecha_especifica,
+            'fecha_inicio' => $fecha_inicio->subHours(6),
+            'fecha_fin' => $fecha_fin->subHours(6)
 
         ];
     }
-    
+
+    public function obtenerPeriodoPromociones()
+    {
+        //Trae la fecha y hora actual
+        $fecha_hoy = Carbon::now()->subHours(6);
+
+        $Promocion = Promocion::where('fecha_inicio', '<=', $fecha_hoy)->where('fecha_fin', '>=', $fecha_hoy)->first();
+
+        if ($Promocion != null) {
+            return [
+                'error' => false,
+                'message' => "Existe una promoción " . $Promocion->nombre_promocion,
+                "data" => ['descuento' => $Promocion->porcentaje_descuento]
+            ];
+        }
+
+        return [
+            'error' => true,
+            'message' => "No existe una promoción"
+        ];
+    }
+
     //EJEMPLOS APIISSSSSSSS
     public function getAPIAll()
     {

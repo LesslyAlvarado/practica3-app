@@ -66,3 +66,5 @@ Route::post('/asignar_permisos/{Perfil_id}', [Perfil_permisosController::class, 
 
 
 Route::get('/fecha_servidor', [PromocionController::class, 'index']);
+
+Route::get('/promociones', [PromocionController::class, 'obtenerPeriodoPromociones']);
